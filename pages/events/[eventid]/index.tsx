@@ -1,24 +1,28 @@
-import { Fragment } from "react";
-import { useRouter } from "next/router";
-import { getEventById } from "@/dummy-data";
+import React, { Fragment } from "react";
+import Head from "next/head";
+import { getEventById, getFeaturedEvents } from "@/utils/api-utils";
 import EventSummary from "@/components/event-detail/event-summary";
 import EventLogistics from "@/components/event-detail/event-logistics";
 import EventContent from "@/components/event-detail/event-content";
-import ErrorAlert from "@/components/ui/error-alert/error-alert";
+import { Event } from "@/pages"; // Event types
 
-const SelectedEvent = (props) => {
-  const router = useRouter();
-  const event = getEventById(router.query.eventid);
+const SelectedEvent: React.FC<Event[]> = (props) => {
+  const event = props.selectedEvent;
+
   if (!event) {
     return (
-        <ErrorAlert>
-          <p>No event found for this selection!</p>
-        </ErrorAlert>
+      <div className="center">
+        <p>Loading...!</p>
+      </div>
     );
   }
 
   return (
     <Fragment>
+      <Head>
+        <title>{event.title}</title>
+        <meta name="descripton" content="Events page where we inject event list compoent" />
+      </Head>
       <EventSummary title={event.title} />
       <EventLogistics {...event} />
       <EventContent>
@@ -27,5 +31,28 @@ const SelectedEvent = (props) => {
     </Fragment>
   );
 };
+
+export async function getStaticProps(context) {
+  const eventId = context.params.eventId;
+  const event = await getEventById(eventId);
+  return {
+    props: {
+      selectedEvent: event,
+    },
+    revalidate: 18000,
+    notFound: Boolean(!event ? true : false)
+  };
+}
+
+export async function getStaticPaths() {
+  const events = await getFeaturedEvents();
+
+  const paths = events.map((event) => ({ params: { eventId: event.id } }));
+
+  return {
+    paths,
+    fallback: 'blocking'
+  };
+}
 
 export default SelectedEvent;

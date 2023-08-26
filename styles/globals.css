@@ -31,3 +31,11 @@ ul {
   margin: auto;
   text-align: center;
 }
+
+.next-error-h1 {
+  color: #b1afaf
+}
+
+.next-error-h1:after {
+  content: " Page not found";
+}
