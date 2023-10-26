@@ -3,8 +3,6 @@ export const url =
 "https://nextjs-course-6e2ac-default-rtdb.firebaseio.com/events.json";
 
 export async function getAllEvents() {
-  // const url =
-  // "https://nextjs-course-6e2ac-default-rtdb.firebaseio.com/events.json";
   const result = await fetch(url);
   const data = await result.json();
 

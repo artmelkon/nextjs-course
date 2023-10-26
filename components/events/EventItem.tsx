@@ -1,11 +1,20 @@
 import React from 'react'
+import Image from 'next/image';
+
 import Button from '../ui/Button';
 import DateIcon from '../icons/date-icon';
 import AddressIcon from '../icons/address-icon';
 import ArrowRightIcon from '../icons/arrow-right-icon';
 import classes from './EventItem.module.css'
 
-const EventItem = ({title, image, date, location, id}) => {
+interface Props {
+  id: string
+  title: string
+  image: string
+  date: string
+  location: string
+}
+const EventItem: React.FC<Props> = ({title, image, date, location, id}) => {
 
   const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',
@@ -16,7 +25,7 @@ const EventItem = ({title, image, date, location, id}) => {
   const exploreLink = `/events/${id}`
   return (
     <li className={classes.item}>
-      <img src={'/' + image} alt={title} />
+      <Image src={'/' + image} alt={title} width={250} height={160} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>

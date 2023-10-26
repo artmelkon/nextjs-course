@@ -1,22 +1,23 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import Head from "next/head";
 import { getFilteredEvents, url } from "@/utils/api-utils";
-import EventList from "@/components/events/EventList";
-import ResultsTitle from "@/components/results-title/results-title";
-import Button from "@/components/ui/Button";
-import ErrorAlert from "@/components/ui/error-alert/error-alert";
+import EventList from "@component/events/EventList";
+import ResultsTitle from "@component/results-title/results-title";
+import Button from "@component/ui/Button";
+import ErrorAlert from "@component/ui/error-alert/error-alert";
 
 const FilteredEvents: React.FC = (props) => {
-  const [loadedEvents, setLoadedEvents] = useState();
+  const [loadedEvents, setLoadedEvents] = useState([]);
   const router = useRouter();
-  const filterData = router.query.slug;
+  const filterData: any = router.query?.slug;
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   useEffect(() => {
-    const events = [];
+    const events: any = [];
     if (data) {
       for (var key in data) {
         events.push({
@@ -28,14 +29,34 @@ const FilteredEvents: React.FC = (props) => {
     setLoadedEvents(events);
   }, [data]);
 
-  console.log(loadedEvents)
+  let pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="descripton" content={`A list of filtered event.`} />
+    </Head>
+  );
+  if (!loadedEvents || Boolean(isLoading)) {
+    return (
+      <Fragment>
+        {pageHeadData}
+        <p className="center">Loading...!</p>;
+      </Fragment>
+    );
+  }
 
-  if (!loadedEvents || isLoading) return <p className="center">Loading...!</p>;
+  const numYear: number = +filterData[0];
+  const numMonth: number = +filterData[1];
+
+  pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="descripton"
+        content={`All event for ${numMonth}/${numYear}`}
+      />
+    </Head>
+  );
   if (error) return <p>Unable to Load</p>;
-
-  const numYear = +filterData[0];
-  const numMonth = +filterData[1];
-
   if (
     isNaN(numYear) ||
     isNaN(numMonth) ||
@@ -46,6 +67,7 @@ const FilteredEvents: React.FC = (props) => {
   ) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid Date Ragen. Adjust you query!</p>
         </ErrorAlert>
@@ -56,7 +78,7 @@ const FilteredEvents: React.FC = (props) => {
     );
   }
 
-  const filteredData = loadedEvents.filter((event) => {
+  const filteredData = loadedEvents.filter((event: any) => {
     const eventDate = new Date(event.date);
     return (
       eventDate.getFullYear() === numYear &&
@@ -67,6 +89,7 @@ const FilteredEvents: React.FC = (props) => {
   if (!filteredData || filteredData.length === 0) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found!</p>
         </ErrorAlert>
@@ -81,6 +104,7 @@ const FilteredEvents: React.FC = (props) => {
 
   return (
     <Fragment>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredData} />
     </Fragment>

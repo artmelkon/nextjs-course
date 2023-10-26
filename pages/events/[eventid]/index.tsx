@@ -1,13 +1,18 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
 import { getEventById, getFeaturedEvents } from "@/utils/api-utils";
-import EventSummary from "@/components/event-detail/event-summary";
-import EventLogistics from "@/components/event-detail/event-logistics";
-import EventContent from "@/components/event-detail/event-content";
-import { Event } from "@/pages"; // Event types
+import EventSummary from "@component/event-detail/event-summary";
+import EventLogistics from "@component/event-detail/event-logistics";
+import EventContent from "@component/event-detail/event-content";
+import Comments from "@component/input/comments";
+import { Event as EventType } from "@/pages";
 
-const SelectedEvent: React.FC<Event[]> = (props) => {
-  const event = props.selectedEvent;
+interface SelectedEventProps {
+  selectedEvent: EventType;
+}
+
+const SelectedEvent: React.FC<SelectedEventProps> = ({ selectedEvent }) => {
+  const event = selectedEvent;
 
   if (!event) {
     return (
@@ -21,18 +26,22 @@ const SelectedEvent: React.FC<Event[]> = (props) => {
     <Fragment>
       <Head>
         <title>{event.title}</title>
-        <meta name="descripton" content="Events page where we inject event list compoent" />
+        <meta
+          name="description"
+          content="Events page where we inject event list compoent"
+        />
       </Head>
       <EventSummary title={event.title} />
       <EventLogistics {...event} />
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </Fragment>
   );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context: any) {
   const eventId = context.params.eventId;
   const event = await getEventById(eventId);
   return {
@@ -40,7 +49,7 @@ export async function getStaticProps(context) {
       selectedEvent: event,
     },
     revalidate: 18000,
-    notFound: Boolean(!event ? true : false)
+    notFound: Boolean(!event ? true : false),
   };
 }
 
@@ -51,7 +60,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: 'blocking'
+    fallback: "blocking",
   };
 }
 
