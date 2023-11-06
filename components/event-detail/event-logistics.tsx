@@ -5,7 +5,7 @@ import LogisticsItem from "./logistics-item";
 import classes from "./event-logistics.module.css";
 
 function EventLogistics(props: any) {
-  const { date, location, image, imageAlt } = props;
+  const { date, location, image, title } = props;
 
   const humanReadableDate = new Date(date).toLocaleDateString("en-US", {
     day: "numeric",
@@ -17,7 +17,7 @@ function EventLogistics(props: any) {
   return (
     <section className={classes.logistics}>
       <div className={classes.image}>
-        <Image src={`/${image}`} alt={imageAlt} width={300} height={300} />
+        <Image src={`/${image}`} alt={title} width={300} height={300} />
       </div>
       <ul className={classes.list}>
         <LogisticsItem icon={DateIcon}>

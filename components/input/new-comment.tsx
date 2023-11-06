@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import classes from "./new-comment.module.css";
 
-function NewComment(props) {
+function NewComment(props: any) {
   const [isInvalid, setIsInvalid] = useState(false);
 
   const emailInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
