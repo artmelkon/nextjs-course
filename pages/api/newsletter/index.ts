@@ -1,20 +1,36 @@
-import {MongoClient} from 'mongodb';
+import { MongoClient } from 'mongodb';
+
+async function connectDatabase() {
+  return await MongoClient.connect(`${process.env.MONGODB}`);
+}
+
+async function insertDocument(client: any, document: any) {
+  const db = client.db();
+  await db.collection('newsletters').insertOne(document);
+}
 
 async function handler(req: any, res: any) {
-  if(req.method === 'POST') {
+  if (req.method === 'POST') {
     const userEmail = req.body.email;
-    if(!userEmail || !userEmail.includes('@')) {
-      res.status(422).json({message: 'Invalid email address!'})
+    if (!userEmail || !userEmail.includes('@')) {
+      res.status(422).json({ message: 'Invalid email address!' })
       return;
     };
 
-    const client = await MongoClient.connect('mongodb://localhost/events')
-    const db = client.db();
-    await db.collection('newsletters').insertOne({email: userEmail});
+    let client;
+    try {
+      client = await connectDatabase();
+    } catch (err) {
+      return res.status(500).json({ message: 'Connection to DB failed!' });
+    }
+    try {
+      await insertDocument(client, { email: userEmail })
+      client.close();
+    } catch (err) {
+      return res.status(500).json({ message: 'Writing data failed!' });
+    }
 
-    client.close();
-
-    res.status(201).json({message: 'Success!'})
+    res.status(201).json({ message: 'Success!' })
   }
 }
 

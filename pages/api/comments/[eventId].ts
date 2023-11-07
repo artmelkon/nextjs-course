@@ -11,7 +11,7 @@ interface CommentType {
 const handler = async (req: any, res: any) => {
   const eventId = req.query.eventId;
 
-  const client = await MongoClient.connect('mongodb://localhost/events')
+  const client = await MongoClient.connect(`${process.env.MONGODB}`)
 
   if (req.method === 'POST') {
     const { email, name, text } = req.body
@@ -20,7 +20,6 @@ const handler = async (req: any, res: any) => {
       return;
     }
 
-    console.log(email, name, text);
     const newComment: CommentType = {
       email,
       name,
