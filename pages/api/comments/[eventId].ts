@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { connectDatabase, insertDocument, getAllDocuments } from '@/utils/db-utils';
 
 interface CommentType {
   _id?: any
@@ -10,13 +10,18 @@ interface CommentType {
 
 const handler = async (req: any, res: any) => {
   const eventId = req.query.eventId;
-
-  const client = await MongoClient.connect(`${process.env.MONGODB}`)
+  let client;
+  try {
+    client = await connectDatabase()
+  } catch (err) {
+    return res.status(500).json({ message: 'Connection to DB failed!' })
+  }
 
   if (req.method === 'POST') {
     const { email, name, text } = req.body
     if (!email.includes('@') || !name || name.trim() === '' || !text || text.trim() === '') {
       res.status(422).json({ message: 'Invalid input!' })
+      client.close();
       return;
     }
 
@@ -27,18 +32,24 @@ const handler = async (req: any, res: any) => {
       eventId
     }
 
-    const db = client.db();
-    const result = await db.collection('comments').insertOne(newComment);
-    console.log(result)
-    newComment._id = result.insertedId;
-
-    res.status(201).json({ message: 'Comment added!', comment: newComment })
+    let result;
+    try {
+      result = await insertDocument(client, 'comments', newComment);
+      newComment._id = result.insertedId;
+      res.status(201).json({ message: 'Comment added!', comment: newComment })
+    } catch (err) {
+      res.status(500).json({ message: 'Writing data failed!' })
+    }
   }
 
   if (req.method === 'GET') {
-    const db = client.db();
-    const documents = await db.collection('comments').find().sort({ _id: -1 }).toArray();
-    res.status(200).json({ comments: documents });
+    let documents;
+    try {
+      documents = await getAllDocuments(client, 'comments', { _id: -1 }, { eventId });
+      res.status(200).json({ comments: documents });
+    } catch (err) {
+      res.status(500).json({ message: 'Unable to retrive data!' })
+    }
   }
 
   client.close();

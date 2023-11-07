@@ -19,6 +19,6 @@
       "@component/*": ["./components/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/api-utils.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/api-utils.ts"],
   "exclude": ["node_modules"]
 }

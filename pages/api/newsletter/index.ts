@@ -1,13 +1,4 @@
-import { MongoClient } from 'mongodb';
-
-async function connectDatabase() {
-  return await MongoClient.connect(`${process.env.MONGODB}`);
-}
-
-async function insertDocument(client: any, document: any) {
-  const db = client.db();
-  await db.collection('newsletters').insertOne(document);
-}
+import { connectDatabase, insertDocument } from "@/utils/db-utils";
 
 async function handler(req: any, res: any) {
   if (req.method === 'POST') {
@@ -24,7 +15,7 @@ async function handler(req: any, res: any) {
       return res.status(500).json({ message: 'Connection to DB failed!' });
     }
     try {
-      await insertDocument(client, { email: userEmail })
+      await insertDocument(client, 'newsletter', { email: userEmail })
       client.close();
     } catch (err) {
       return res.status(500).json({ message: 'Writing data failed!' });
