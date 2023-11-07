@@ -1,4 +1,6 @@
-function handler(req: any, res: any) {
+import {MongoClient} from 'mongodb';
+
+async function handler(req: any, res: any) {
   if(req.method === 'POST') {
     const userEmail = req.body.email;
     if(!userEmail || !userEmail.includes('@')) {
@@ -6,7 +8,12 @@ function handler(req: any, res: any) {
       return;
     };
 
-    console.log(userEmail);
+    const client = await MongoClient.connect('mongodb://localhost/events')
+    const db = client.db();
+    await db.collection('newsletters').insertOne({email: userEmail});
+
+    client.close();
+
     res.status(201).json({message: 'Success!'})
   }
 }
