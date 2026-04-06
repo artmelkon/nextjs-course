@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import classes from './Button.module.css';
 
-const Button = (props) => {
+const Button = (props: any) => {
   if(props.url) {
     return <Link href={props.url} className={classes.btn}>{props.children}</Link>
   }
