@@ -2,25 +2,40 @@ import Link from "next/link";
 import classes from "./Button.module.css";
 
 type ButtonProps =
-  | { url: string; onClick?: never; children: React.ReactNode }
+  | {
+      url: string;
+      onClick?: never;
+      children: React.ReactNode;
+      disabled?: boolean;
+    }
   | {
       url?: never;
       onClick?: () => void;
       children: React.ReactNode;
-      disabled: boolean;
+      disabled?: boolean;
     };
 
-const Button: React.FC<ButtonProps> = (props) => {
-  if (props.url) {
+const Button: React.FC<ButtonProps> = ({
+  url,
+  onClick,
+  children,
+  disabled,
+}) => {
+  if (url) {
     return (
-      <Link href={props.url} className={classes.btn}>
-        {props.children}
+      <Link href={url} className={classes.btn}>
+        {children}
       </Link>
     );
   }
   return (
-    <button type="button" className={classes.btn} onClick={props.onClick}>
-      {props.children}
+    <button
+      type="button"
+      className={classes.btn}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
     </button>
   );
 };
