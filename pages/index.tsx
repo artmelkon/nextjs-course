@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { getFeaturedEvents } from "../utils/api-utils";
+import { getFeaturedEvents } from "@/utils/api-utils";
 import EventList from "@/components/events/EventList";
 import NewsletterRegistration from "@/components/input/newsletter-registration";
 

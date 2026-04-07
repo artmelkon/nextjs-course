@@ -1,7 +1,7 @@
 import React from "react";
 import EventItem from "./EventItem";
 import classes from "./EventList.module.css";
-import { Event as EventType } from "../../pages";
+import { Event as EventType } from "@/pages";
 
 interface EventProps {
   items: EventType[];

@@ -3,13 +3,14 @@ import classes from "./new-comment.module.css";
 
 function NewComment(props: any) {
   const [isInvalid, setIsInvalid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const emailInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const nameInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const commentInputRef =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 
-  function sendCommentHandler(event: any) {
+  async function sendCommentHandler(event: any) {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current?.value;
@@ -29,11 +30,17 @@ function NewComment(props: any) {
       return;
     }
 
-    props.onAddComment({
+    setIsInvalid(false);
+    setIsSubmitting(true);
+    await props.onAddComment({
       email: enteredEmail,
       name: enteredName,
       text: enteredComment,
     });
+    emailInputRef.current.value = '';
+    nameInputRef.current.value = '';
+    commentInputRef.current.value = '';
+    setIsSubmitting(false);
   }
 
   return (
@@ -53,7 +60,7 @@ function NewComment(props: any) {
         <textarea id="comment" rows="5" ref={commentInputRef}></textarea>
       </div>
       {isInvalid && <p>Please enter a valid email address and comment!</p>}
-      <button>Submit</button>
+      <button disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
     </form>
   );
 }

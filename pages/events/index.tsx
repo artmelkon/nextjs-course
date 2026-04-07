@@ -4,7 +4,7 @@ import { getAllEvents } from "@/utils/api-utils";
 import EventList from "@/components/events/EventList";
 import Search from "@/components/ui/Search";
 import Head from "next/head";
-import { Event as EventType} from "../index";
+import { Event as EventType } from "@/pages";
 
 interface EventProps {
   event: EventType[]

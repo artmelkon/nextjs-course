@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
 import { getEventById, getFeaturedEvents } from "@/utils/api-utils";
-import EventSummary from "@component/event-detail/event-summary";
-import EventLogistics from "@component/event-detail/event-logistics";
-import EventContent from "@component/event-detail/event-content";
-import Comments from "@component/input/comments";
+import EventSummary from "@/components/event-detail/event-summary";
+import EventLogistics from "@/components/event-detail/event-logistics";
+import EventContent from "@/components/event-detail/event-content";
+import Comments from "@/components/input/comments";
 import { Event as EventType } from "@/pages";
 
 interface SelectedEventProps {

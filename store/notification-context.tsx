@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 
 export interface NotificationType {
   notification?: any;
@@ -16,13 +16,18 @@ const NotificationContext = createContext<NotificationType>({
 
 export const NotificationContextProvider = ({ children }: any) => {
   const [activeNotification, setActiveNotification] = useState(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if(activeNotification && (activeNotification['status'] === 'success' || activeNotification['status'] === 'error')) {
-      const setTimer = setTimeout(() => {
-        setActiveNotification(null)
+      timerRef.current = setTimeout(() => {
+        setActiveNotification(null);
+        timerRef.current = null;
       }, 3000);
 
-      return () => {clearTimeout(setTimer)}
+      return () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+      };
     }
   }, [activeNotification]);
 
@@ -30,6 +35,10 @@ export const NotificationContextProvider = ({ children }: any) => {
     setActiveNotification(notificationData);
   }
   function hideNotificationHandler() {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
     setActiveNotification(null);
   }
 
