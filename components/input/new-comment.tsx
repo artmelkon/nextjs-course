@@ -60,7 +60,7 @@ function NewComment(props: any) {
         <textarea id="comment" rows="5" ref={commentInputRef}></textarea>
       </div>
       {isInvalid && <p>Please enter a valid email address and comment!</p>}
-      <button disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
+      <button className={classes.submitBtn} disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
     </form>
   );
 }
