@@ -28,7 +28,7 @@ function Comments(props: CommentIdProps) {
       };
       fetchedData();
     }
-  }, [showComments]);
+  }, [showComments, eventId]);
 
 
 

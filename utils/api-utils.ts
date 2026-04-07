@@ -1,6 +1,6 @@
 
 export const url =
-"https://nextjs-course-6e2ac-default-rtdb.firebaseio.com/events.json";
+  `https://nextjs-course-6e2ac-default-rtdb.firebaseio.com/events.json?auth=${process.env.FIREBASE_SECRET}`;
 
 export async function getAllEvents() {
   const result = await fetch(url);
