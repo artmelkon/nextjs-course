@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <NotificationContextProvider>
       <Layout>
         <Head>
-          <title>Next Genereal Events Title</title>
+          <title>Next General Events</title>
           <meta name="description" content="" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>

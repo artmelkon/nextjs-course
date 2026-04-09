@@ -2,7 +2,7 @@ import classes from './comment-list.module.css';
 
 interface CommentProps {
   items: {
-    id: string
+    _id: string
     name: string
     text: string
   }[]

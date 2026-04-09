@@ -21,10 +21,20 @@ function Comments(props: CommentIdProps) {
     if (showComments) {
       setIsFetching(true)
       const fetchedData = async () => {
-        const response = await fetch(`/api/comments/${eventId}`);
-        const data = await response.json();
-        setComments(data.comments);
-        setIsFetching(false)
+        try {
+          const response = await fetch(`/api/comments/${eventId}`);
+          if (!response.ok) throw new Error('Failed to fetch comments');
+          const data = await response.json();
+          setComments(data.comments ?? []);
+        } catch (err) {
+          notificationCts.showNotification({
+            title: 'Error',
+            message: 'Could not load comments. Please try again.',
+            status: 'error',
+          });
+        } finally {
+          setIsFetching(false);
+        }
       };
       fetchedData();
     }

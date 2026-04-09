@@ -40,16 +40,16 @@ const handler = async (req: any, res: any) => {
     } catch (err) {
       res.status(500).json({ message: 'Writing data failed!' })
     }
-  }
-
-  if (req.method === 'GET') {
+  } else if (req.method === 'GET') {
     let documents;
     try {
       documents = await getAllDocuments(client, 'comments', { _id: -1 }, { eventId });
       res.status(200).json({ comments: documents });
     } catch (err) {
-      res.status(500).json({ message: 'Unable to retrive data!' })
+      res.status(500).json({ message: 'Unable to retrieve data!' })
     }
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   client.close();

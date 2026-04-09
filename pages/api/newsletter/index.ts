@@ -16,12 +16,14 @@ async function handler(req: any, res: any) {
     }
     try {
       await insertDocument(client, 'newsletter', { email: userEmail })
-      client.close();
+      res.status(201).json({ message: 'Success!' })
     } catch (err) {
-      return res.status(500).json({ message: 'Writing data failed!' });
+      res.status(500).json({ message: 'Writing data failed!' });
+    } finally {
+      client.close();
     }
-
-    res.status(201).json({ message: 'Success!' })
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 }
 
