@@ -14,6 +14,16 @@ const NewsletterRegistration = () => {
     // send valid data to API
 
     const emailInput = emailRef.current?.value;
+
+    if (!emailInput || !emailInput.includes("@")) {
+      notificationCtx.showNotification({
+        title: "Error",
+        message: "Please enter a valid email address.",
+        status: "error",
+      });
+      return;
+    }
+
     notificationCtx.showNotification({
       title: "Signing up...",
       message: "Registering for newsletter",

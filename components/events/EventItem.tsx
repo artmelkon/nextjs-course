@@ -13,8 +13,9 @@ interface Props {
   image: string;
   date: string;
   location: string;
+  priority?: boolean;
 }
-const EventItem: React.FC<Props> = ({ title, image, date, location, id }) => {
+const EventItem: React.FC<Props> = ({ title, image, date, location, id, priority }) => {
   const humanReadableDate = new Date(date).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
@@ -24,7 +25,7 @@ const EventItem: React.FC<Props> = ({ title, image, date, location, id }) => {
   const exploreLink = `/events/${id}`;
   return (
     <li className={classes.item}>
-      <Image src={"/" + image} alt={title} width={250} height={160} />
+      <Image src={"/" + image} alt={title} width={250} height={160} priority={priority} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>

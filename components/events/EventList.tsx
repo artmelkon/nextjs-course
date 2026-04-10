@@ -18,8 +18,8 @@ const EventList: React.FC<EventProps> = ({ items }) => {
 
   return (
     <ul className={classes.list}>
-      {validEvents.map((event: any) => (
-        <EventItem key={event.id} {...event} />
+      {validEvents.map((event: any, index: number) => (
+        <EventItem key={event.id} {...event} priority={index === 0} />
       ))}
     </ul>
   );

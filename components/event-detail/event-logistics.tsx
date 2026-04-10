@@ -12,7 +12,7 @@ function EventLogistics(props: any) {
     month: "long",
     year: "numeric",
   });
-  const addressText = location.replace(", ", "\n");
+  const addressText = location?.replace(", ", "\n") ?? "Location not available";
 
   return (
     <section className={classes.logistics}>

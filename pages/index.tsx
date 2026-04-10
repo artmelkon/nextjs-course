@@ -10,11 +10,12 @@ export type Event = {
   location: string;
   date: string;
   isFeatured: boolean;
+  image: string;
 }
 
 interface EventsProps {
   events: Event[]
-}[]
+}
 const Home: React.FC<EventsProps> = ({events}) => {
   return (
     <div>
