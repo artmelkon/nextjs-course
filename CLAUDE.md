@@ -100,3 +100,9 @@ type CommentType = {
 | `newsletter` | `POST /api/newsletter`  | `{ email }`                                |
 
 `getAllDocuments(client, collection, sort, filter?)` — `sort` is required, `filter` is optional. Comments are queried with `sort: { _id: -1 }` and `filter: { eventId }`.
+
+## Claude Code
+
+The **TypeScript LSP** plugin is enabled — Claude Code can read live diagnostics,
+hover types, and go-to-definition data directly from the language server.
+Run `npm run dev` or `npm run build` so the TS server stays warm.

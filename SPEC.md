@@ -27,11 +27,12 @@ Next Events is a full-stack event browsing application built with Next.js 13 (Pa
 
 ### Environment Variables
 
-| Variable  | Description               | Dev Default                  |
-| --------- | ------------------------- | ---------------------------- |
-| `MONGODB` | MongoDB connection string | `mongodb://localhost/events` |
+| Variable          | Description                              | Dev Default                  |
+| ----------------- | ---------------------------------------- | ---------------------------- |
+| `MONGODB`         | MongoDB connection string                | `mongodb://localhost/events` |
+| `FIREBASE_SECRET` | Firebase Realtime Database auth token    | —                            |
 
-Environment is set in `next.config.js` per phase — no `.env` file required.
+Set in `.env.local`.
 
 ### Node/NPM Scripts
 
@@ -82,7 +83,7 @@ Subscribes an email to the newsletter.
 
 Returns all comments for a specific event, sorted by `_id` descending (newest first).
 
-#### Response
+#### GET Response
 
 ```json
 {
@@ -104,13 +105,13 @@ Returns all comments for a specific event, sorted by `_id` descending (newest fi
 
 Adds a new comment to a specific event.
 
-#### Request Body
+#### POST Request Body
 
 ```json
 { "email": "user@example.com", "name": "John", "text": "Great event!" }
 ```
 
-#### Response
+#### POST Response
 
 | Status | Body                                                | Condition              |
 | ------ | --------------------------------------------------- | ---------------------- |
@@ -245,6 +246,7 @@ export type Event = {
   location: string;
   date: string;
   isFeatured: boolean;
+  image: string; // path relative to /public, prefixed with "/" when used in <Image>
 };
 ```
 
