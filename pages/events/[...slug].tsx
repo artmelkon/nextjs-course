@@ -13,13 +13,13 @@ const FilteredEvents: React.FC = (props) => {
   const router = useRouter();
   const filterData: any = router.query?.slug;
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const fetcher = (url: string) => fetch(url).then(res => { if (!res.ok) throw new Error('Fetch failed'); return res.json(); });
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   useEffect(() => {
     const events: any = [];
     if (data) {
-      for (var key in data) {
+      for (const key of Object.keys(data)) {
         events.push({
           id: key,
           ...data[key],
@@ -32,10 +32,10 @@ const FilteredEvents: React.FC = (props) => {
   let pageHeadData = (
     <Head>
       <title>Filtered Events</title>
-      <meta name="descripton" content={`A list of filtered event.`} />
+      <meta name="description" content={`A list of filtered event.`} />
     </Head>
   );
-  if (!loadedEvents || Boolean(isLoading)) {
+  if (!loadedEvents || isLoading) {
     return (
       <Fragment>
         {pageHeadData}
@@ -51,7 +51,7 @@ const FilteredEvents: React.FC = (props) => {
     <Head>
       <title>Filtered Events</title>
       <meta
-        name="descripton"
+        name="description"
         content={`All event for ${numMonth}/${numYear}`}
       />
     </Head>
@@ -105,7 +105,7 @@ const FilteredEvents: React.FC = (props) => {
   return (
     <Fragment>
       {pageHeadData}
-      <ResultsTitle date={date} />
+      <ResultsTitle date={date.toISOString()} />
       <EventList items={filteredData} />
     </Fragment>
   );

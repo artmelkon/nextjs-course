@@ -21,7 +21,7 @@ const Home: React.FC<EventsProps> = ({events}) => {
     <div>
       <Head>
         <title>NextJS Course Events</title>
-        <meta name="description" content="NextJS framework is a greate addition to the skillset" />
+        <meta name="description" content="NextJS framework is a great addition to the skillset" />
       </Head>
       <NewsletterRegistration />
       <EventList items={events} />
@@ -30,13 +30,16 @@ const Home: React.FC<EventsProps> = ({events}) => {
 };
 
 export async function getStaticProps() {
-  const featuredEvents = await getFeaturedEvents();
-
-  return {
-    props: {
-      events: featuredEvents,
-    },
-  };
+  try {
+    const featuredEvents = await getFeaturedEvents();
+    return {
+      props: {
+        events: featuredEvents,
+      },
+    };
+  } catch (err) {
+    return { props: { events: [] } };
+  }
 }
 
 export default Home;

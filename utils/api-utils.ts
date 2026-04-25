@@ -6,10 +6,11 @@ export const url =
 
 export async function getAllEvents(): Promise<Event[]> {
   const result = await fetch(url);
+  if (!result.ok) throw new Error(`Firebase error: ${result.status}`);
   const data = await result.json();
 
   let eventsList: Event[] = [];
-  for (var key in data) {
+  for (const key of Object.keys(data)) {
     eventsList.push({ id: key, ...data[key] });
   }
 

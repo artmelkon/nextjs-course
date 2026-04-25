@@ -42,15 +42,19 @@ const SelectedEvent: React.FC<SelectedEventProps> = ({ selectedEvent }) => {
 };
 
 export async function getStaticProps(context: any) {
-  const eventId = context.params.eventId;
-  const event = await getEventById(eventId);
-  return {
-    props: {
-      selectedEvent: event,
-    },
-    revalidate: 18000,
-    notFound: Boolean(!event ? true : false),
-  };
+  try {
+    const eventId = context.params.eventId;
+    const event = await getEventById(eventId);
+    return {
+      props: {
+        selectedEvent: event ?? null,
+      },
+      revalidate: 18000,
+      notFound: !event,
+    };
+  } catch (err) {
+    return { notFound: true };
+  }
 }
 
 export async function getStaticPaths() {

@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-We're building an app described in @SPEC.md. Read that file for general architectural tasks or to double-check
+I'm building an app described in @SPEC.md. Read that file for general architectural tasks or to double-check the exact database structure, tech stack or application architecture.
+
+Keep your replies extrimly concise and focus on conveying the key information. No unnecessary fluff, no long code snippets.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -94,12 +96,14 @@ type CommentType = {
 
 ### MongoDB Collections
 
-| Collection   | Written by              | Shape                                      |
-| ------------ | ----------------------- | ------------------------------------------ |
-| `comments`   | `POST /api/comments/[eventId]` | `{ email, name, text, eventId }`     |
-| `newsletter` | `POST /api/newsletter`  | `{ email }`                                |
+| Collection   | Written by                     | Shape                            |
+| ------------ | ------------------------------ | -------------------------------- |
+| `comments`   | `POST /api/comments/[eventId]` | `{ email, name, text, eventId }` |
+| `newsletter` | `POST /api/newsletter`         | `{ email }`                      |
 
 `getAllDocuments(client, collection, sort, filter?)` — `sort` is required, `filter` is optional. Comments are queried with `sort: { _id: -1 }` and `filter: { eventId }`.
+
+Always call `client.close()` in all code paths (success and error) after DB operations in API routes.
 
 ## Claude Code
 

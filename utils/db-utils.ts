@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 export async function connectDatabase() {
+  if (!process.env.MONGODB) throw new Error('MONGODB env var not set');
   return await MongoClient.connect(`${process.env.MONGODB}`);
 }
 

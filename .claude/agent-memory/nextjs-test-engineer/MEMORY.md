@@ -1,0 +1,3 @@
+- [Mock Factories & Setup](mock-factories.md) — reusable mock patterns for MongoDB utils, NotificationContext, and fetch
+- [Async Submit Gotcha](async-submit-gotcha.md) — jsdom unhandled rejection problem with async onSubmit handlers and how to work around it
+- [Vitest Config](vitest-config.md) — project has no vitest config by default; one must be created with @/ alias and jsdom environment

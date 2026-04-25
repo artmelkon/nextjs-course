@@ -13,7 +13,7 @@ interface EventProps {
 const Events = ({events}: any) => {
   const router = useRouter();
 
-  function findEventHandler(year: number, month: number) {
+  function findEventHandler(year: string, month: string) {
     const fullPath = `/events/${year}/${month}`;
 
     router.push(fullPath)
@@ -23,7 +23,7 @@ const Events = ({events}: any) => {
     <Fragment>
       <Head>
         <title>Events Home</title>
-        <meta name="descripton" content="Events page where we inject event list compoent" />
+        <meta name="description" content="Events page where we inject event list compoent" />
       </Head>
       <Search onSearch={findEventHandler} />
       <EventList items={events} />
@@ -32,13 +32,16 @@ const Events = ({events}: any) => {
 }
 
 export async function getStaticProps() {
-  const events = await getAllEvents();
-
-  return {
-    props: {
-      events,
-    },
-    revalidate: 60
+  try {
+    const events = await getAllEvents();
+    return {
+      props: {
+        events,
+      },
+      revalidate: 60
+    };
+  } catch (err) {
+    return { props: { events: [] } };
   }
 }
 

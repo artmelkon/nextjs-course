@@ -1,0 +1,1 @@
+- [Test coverage and mock patterns](project_test_coverage.md) — API route test coverage, db-utils mock pattern, NextApiResponse mock shape, client.close() verification

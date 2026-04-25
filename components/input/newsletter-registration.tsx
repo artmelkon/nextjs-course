@@ -9,13 +9,10 @@ const NewsletterRegistration = () => {
   async function registrationHandler(event: any) {
     event.preventDefault();
 
-    // fetch user input (state or refs)
-    // optional: validate input
-    // send valid data to API
-
     const emailInput = emailRef.current?.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailInput || !emailInput.includes("@")) {
+    if (!emailInput || !emailRegex.test(emailInput)) {
       notificationCtx.showNotification({
         title: "Error",
         message: "Please enter a valid email address.",
@@ -41,8 +38,7 @@ const NewsletterRegistration = () => {
     try {
       if (!response.ok)
         throw Error(response.statusText || "Something went wrong");
-      const data = await response.json();
-      console.log(data);
+      await response.json();
       return notificationCtx.showNotification({
         title: "Success",
         message: "Successfully registered for newsletter",
